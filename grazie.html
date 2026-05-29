@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twoje bonusy — Owen Blair</title>
+  <style>
+    :root {
+      --navy: #0D1B2A;
+      --navy-light: #152333;
+      --cream: #F5F0E8;
+      --cream-dark: #EDE7D9;
+      --gold: #C9A96E;
+      --gold-light: #DFC08A;
+      --gold-dark: #A8854A;
+      --text: #1a1a2e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--navy);
+      color: var(--cream);
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--navy-light);
+      border-bottom: 2px solid var(--gold);
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .header-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .header h1 {
+      font-size: clamp(24px, 5vw, 38px);
+      color: var(--cream);
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .header h1 span { color: var(--gold); }
+
+    .header p {
+      color: rgba(245,240,232,0.7);
+      font-size: 16px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* GOLD DIVIDER */
+    .gold-line {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 20px;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* SECTION */
+    section {
+      padding: 60px 0;
+    }
+
+    .section-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(22px, 4vw, 32px);
+      color: var(--cream);
+      margin-bottom: 8px;
+      font-weight: normal;
+    }
+
+    .section-sub {
+      color: rgba(245,240,232,0.65);
+      font-family: 'Arial', sans-serif;
+      font-size: 15px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* SEPARATOR */
+    .sep {
+      border: none;
+      border-top: 1px solid rgba(201,169,110,0.25);
+      margin: 0;
+    }
+
+    /* ================================
+       BONUS 1 — 21 ĆWICZEŃ ACCORDION
+    ================================ */
+    .phase-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 32px 0 12px;
+    }
+
+    .phase-title {
+      font-size: 18px;
+      color: var(--cream);
+      margin-bottom: 20px;
+      font-weight: normal;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .exercise-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .exercise-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .exercise-item:hover {
+      border-color: rgba(201,169,110,0.5);
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .exercise-num {
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--gold);
+      background: rgba(201,169,110,0.12);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .exercise-title {
+      flex: 1;
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    .exercise-arrow {
+      color: var(--gold);
+      font-size: 12px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .exercise-item.open .exercise-arrow {
+      transform: rotate(180deg);
+    }
+
+    .exercise-body {
+      display: none;
+      padding: 0 18px 16px 60px;
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+      color: rgba(245,240,232,0.75);
+      line-height: 1.7;
+      border-top: 1px solid rgba(201,169,110,0.1);
+      padding-top: 14px;
+    }
+
+    .exercise-item.open .exercise-body {
+      display: block;
+    }
+
+    /* ================================
+       BONUS 2 — PATTERN SELECTOR
+    ================================ */
+    .pattern-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .pattern-btn {
+      background: rgba(255,255,255,0.04);
+      border: 2px solid rgba(201,169,110,0.25);
+      border-radius: 8px;
+      padding: 22px 18px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s;
+      color: var(--cream);
+    }
+
+    .pattern-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.08);
+    }
+
+    .pattern-btn.active {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.14);
+    }
+
+    .pattern-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .pattern-name {
+      font-size: 16px;
+      font-weight: bold;
+      font-family: 'Arial', sans-serif;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .pattern-desc {
+      font-family: 'Arial', sans-serif;
+      font-size: 12px;
+      color: rgba(245,240,232,0.6);
+      line-height: 1.5;
+    }
+
+    /* PLAN RESULT */
+    .plan-result {
+      display: none;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.35);
+      border-radius: 8px;
+      padding: 32px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .plan-result.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .plan-title {
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .plan-headline {
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+
+    .plan-steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .plan-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .plan-step-num {
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .plan-step-content {}
+
+    .plan-step-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .plan-step-name {
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      color: var(--cream);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .plan-step-tip {
+      font-family: 'Arial', sans-serif;
+      font-size: 12px;
+      color: rgba(245,240,232,0.6);
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--navy-light);
+      border-top: 1px solid rgba(201,169,110,0.2);
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    footer p {
+      font-family: 'Arial', sans-serif;
+      font-size: 12px;
+      color: rgba(245,240,232,0.4);
+    }
+
+    footer strong { color: var(--gold); font-weight: normal; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .exercise-body { padding-left: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">✦ Twoje bonusy są gotowe ✦</div>
+    <h1>Dziękujemy, <span>że jesteś z nami.</span></h1>
+    <p>Poniżej znajdziesz oba bezpłatne dodatki do książki.</p>
+  </div>
+
+  <!-- ===== BONUS 1 ===== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Bonus 1</div>
+      <h2 class="section-title">21 ćwiczeń w pigułce</h2>
+      <p class="section-sub">Szybki przegląd wszystkich 21 ćwiczeń z książki — idealne do powtórek i planowania kolejnych wieczorów.</p>
+
+      <!-- FAZA 1 -->
+      <div class="phase-label">Faza 1 — Tydzień 1–2</div>
+      <div class="phase-title">WIDZISZ — uczyć się rozpoznawać</div>
+      <div class="exercise-list">
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">1</div>
+            <div class="exercise-title">WIDZISZ — wprowadzenie do pierwszej fazy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Pierwsze ćwiczenie wprowadzające. Dowiesz się, co oznacza naprawdę „widzieć" swój overthinking — bez oceniania, bez walki z nim. To punkt startowy całej pracy.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">2</div>
+            <div class="exercise-title">Twój wyzwalacz</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Zidentyfikuj konkretne sytuacje, słowa lub momenty, które uruchamiają twój cykl myślenia. Świadomość wyzwalaczy to klucz do przerwania spirali zanim się nakręci.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">3</div>
+            <div class="exercise-title">Ciało wie pierwsze</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Twoje ciało reaguje na overthinking wcześniej niż świadomy umysł. To ćwiczenie uczy rozpoznawać fizyczne sygnały — napięcie, ucisk, niespokojny oddech — jako wczesne ostrzeżenia.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">4</div>
+            <div class="exercise-title">Głos który ocenia</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Poznaj swojego wewnętrznego krytyka z bliska. Kiedy nauczysz się go rozpoznawać — jego ton, jego ulubione zdania — przestaje mieć nad tobą niewidzialną władzę.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">5</div>
+            <div class="exercise-title">Co jeśli…</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">„Co jeśli coś pójdzie nie tak?" Nauczysz się mapować swoje pętle zamartwiania: od pierwszej myśli do katastroficznego scenariusza. Widząc strukturę, odzyskujesz kontrolę.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">6</div>
+            <div class="exercise-title">Wieczorna głowa</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Wieczór to czas, gdy overthinking jest najsilniejszy. To ćwiczenie daje ci konkretny rytuał na zamknięcie dnia — tak, żeby myśli nie szły z tobą do łóżka.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">7</div>
+            <div class="exercise-title">Kim jesteś kiedy myślisz za dużo</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Zamykające ćwiczenie pierwszej fazy. Spojrzenie z dystansu na swój wzorzec overthinkingu — i pierwsze pytanie: czy to naprawdę jesteś ty, czy tylko nawyk?</div>
+        </div>
+
+      </div>
+
+      <!-- FAZA 2 -->
+      <div class="phase-label" style="margin-top:40px">Faza 2 — Tydzień 3–4</div>
+      <div class="phase-title">ZATRZYMUJESZ — przerywać cykl</div>
+      <div class="exercise-list">
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">8</div>
+            <div class="exercise-title">ZATRZYMUJESZ — wprowadzenie do drugiej fazy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Przejście od obserwacji do działania. Poznasz główne narzędzia zatrzymywania cyklu i zrozumiesz, dlaczego „myślenie więcej" nigdy nie rozwiązuje problemu overthinkingu.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">9</div>
+            <div class="exercise-title">Pięć minut i koniec</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Technika „okna zamartwiania": wyznaczasz sobie 5 minut na myślenie o danej sprawie, a potem — koniec. Prosta, ale zaskakująco skuteczna metoda odzyskiwania wieczoru.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">10</div>
+            <div class="exercise-title">Wyrzuć to z głowy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Pisanie odręczne jako narzędzie zatrzymania ruminacji. Kiedy myśl trafia na papier, przestaje kręcić się w kółko. To nie dziennik — to technika rozładowywania.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">11</div>
+            <div class="exercise-title">Ciało jako wyjście awaryjne</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Kiedy głowa nie słucha — słucha ciało. Ćwiczenia oddechowe i sensoryczne, które w kilka minut przywracają układ nerwowy do stanu równowagi.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">12</div>
+            <div class="exercise-title">Odpowiedz krytykowi</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Technika dialogu z wewnętrznym krytykiem. Nauczysz się mu odpowiadać — nie walczyć, ale też nie kapitulować. Prosta struktura rozmowy, która zmienia dynamikę.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">13</div>
+            <div class="exercise-title">To nie są fakty. To jest myśl.</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Kluczowe ćwiczenie defuzji poznawczej. Nauczysz się odróżniać myśl od rzeczywistości — i rozumieć, że „myślę, że coś jest straszne" to nie to samo, co „coś jest straszne".</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">14</div>
+            <div class="exercise-title">Protokół na złą noc</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Co robić, gdy nic nie działa i myśli są bardzo głośne? Krok po kroku — protokół awaryjny na najtrudniejsze wieczory. Do zachowania w telefonie.</div>
+        </div>
+
+      </div>
+
+      <!-- FAZA 3 -->
+      <div class="phase-label" style="margin-top:40px">Faza 3 — Tydzień 5–7</div>
+      <div class="phase-title">BUDUJESZ — tworzyć nowe nawyki</div>
+      <div class="exercise-list">
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">15</div>
+            <div class="exercise-title">BUDUJESZ — wprowadzenie do trzeciej fazy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Ostatnia faza: od zarządzania overthinkingiem do budowania odporności. Dowiesz się, jak tworzyć nawyki, które zmieniają domyślny tryb działania twojego umysłu.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">16</div>
+            <div class="exercise-title">Niepewność nie jest wrogiem</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Overthinking często jest próbą kontrolowania niepewności. To ćwiczenie uczy tolerancji na „nie wiem" — i pomaga zrozumieć, że nie każde pytanie potrzebuje odpowiedzi teraz.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">17</div>
+            <div class="exercise-title">Realistyczny nie pozytywny</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Pozytywne myślenie nie działa na overthinkerów. Działa myślenie realistyczne. Nauczysz się kwestionować katastroficzne scenariusze — nie przez optymizm, ale przez fakty.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">18</div>
+            <div class="exercise-title">Twój mózg się uczy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Neuroplastyczność w praktyce. Zobaczysz, jak powtarzanie nowych reakcji na wyzwalacze dosłownie przebudowuje ścieżki neuronalne. Postęp jest biologiczny — nie tylko „mentalny".</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">19</div>
+            <div class="exercise-title">Wieczór bez głowy</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Projektowanie wieczoru, który nie należy do overthinkingu. Tworzysz swój osobisty rytuał zamknięcia dnia — spójny, spokojny i twój.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">20</div>
+            <div class="exercise-title">Kiedy wraca</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Overthinking wraca — i to jest normalne. To ćwiczenie uczy, jak podejść do nawrotów bez poczucia porażki. Wzmacniasz odporność, a nie dążysz do perfekcji.</div>
+        </div>
+
+        <div class="exercise-item">
+          <div class="exercise-header" onclick="toggle(this)">
+            <div class="exercise-num">21</div>
+            <div class="exercise-title">Twój system</div>
+            <div class="exercise-arrow">▼</div>
+          </div>
+          <div class="exercise-body">Finałowe ćwiczenie: tworzysz swój osobisty system — zestaw 3–5 narzędzi, które działają właśnie na ciebie. To twój plan na jutro, za miesiąc i za rok.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ===== BONUS 2 ===== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Bonus 2</div>
+      <h2 class="section-title">Twój plan na podstawie wzorca</h2>
+      <p class="section-sub">Wybierz wzorzec, który najbardziej cię opisuje. Dostaniesz spersonalizowaną sekwencję 6 ćwiczeń dopasowaną do twojego sposobu myślenia za dużo.</p>
+
+      <div class="pattern-buttons">
+        <div class="pattern-btn" onclick="selectPattern('petla')">
+          <div class="pattern-icon">🔄</div>
+          <div class="pattern-name">Pętla zamartwiania</div>
+          <div class="pattern-desc">„Co jeśli coś pójdzie nie tak?" Myślisz w kółko o przyszłości, scenariuszach, zagrożeniach.</div>
+        </div>
+        <div class="pattern-btn" onclick="selectPattern('spirala')">
+          <div class="pattern-icon">🌀</div>
+          <div class="pattern-name">Spirala ruminacji</div>
+          <div class="pattern-desc">Wracasz do przeszłości. Analizujesz co powiedziałeś/aś, co się stało, co mogło być inaczej.</div>
+        </div>
+        <div class="pattern-btn" onclick="selectPattern('krytyk')">
+          <div class="pattern-icon">🔍</div>
+          <div class="pattern-name">Krytyk wewnętrzny</div>
+          <div class="pattern-desc">Głos w głowie ocenia każdy twój krok. Za mało, za późno, nie tak jak trzeba.</div>
+        </div>
+      </div>
+
+      <!-- PLAN: PĘTLA -->
+      <div class="plan-result" id="plan-petla">
+        <div class="plan-title">Twój plan — Pętla zamartwiania</div>
+        <div class="plan-headline">6 ćwiczeń, które przerywają spiralę „co jeśli"</div>
+        <div class="plan-steps">
+          <div class="plan-step">
+            <div class="plan-step-num">1</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 5 · Tydzień 1</div>
+              <div class="plan-step-name">Co jeśli…</div>
+              <div class="plan-step-tip">Zacznij od zmapowania swojej pętli. Gdzie zaczyna się twoje „co jeśli" i dokąd dochodzi?</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">2</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 2 · Tydzień 1</div>
+              <div class="plan-step-name">Twój wyzwalacz</div>
+              <div class="plan-step-tip">Znajdź moment, w którym zamartwianie się zaczyna — i naucz się go rozpoznawać zanim nabierze siły.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">3</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 9 · Tydzień 3</div>
+              <div class="plan-step-name">Pięć minut i koniec</div>
+              <div class="plan-step-tip">Ogranicz zamartwianie do wyznaczonego okna czasowego. Twój mózg potrzebuje granicy — nie wolności.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">4</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 13 · Tydzień 4</div>
+              <div class="plan-step-name">To nie są fakty. To jest myśl.</div>
+              <div class="plan-step-tip">Naucz się dystansu do scenariuszy katastroficznych. „Może pójdzie nie tak" to myśl — nie przepowiednia.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">5</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 16 · Tydzień 5</div>
+              <div class="plan-step-name">Niepewność nie jest wrogiem</div>
+              <div class="plan-step-tip">Pętla zamartwiania to próba kontroli niepewności. Ten krok uczy jak żyć z „nie wiem" — bez lęku.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">6</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 19 · Tydzień 6</div>
+              <div class="plan-step-name">Wieczór bez głowy</div>
+              <div class="plan-step-tip">Finał: twój rytuał wieczorny, który nie daje pętli przestrzeni do rozkręcenia się przed snem.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAN: SPIRALA -->
+      <div class="plan-result" id="plan-spirala">
+        <div class="plan-title">Twój plan — Spirala ruminacji</div>
+        <div class="plan-headline">6 ćwiczeń, które wyciągają cię z przeszłości</div>
+        <div class="plan-steps">
+          <div class="plan-step">
+            <div class="plan-step-num">1</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 7 · Tydzień 2</div>
+              <div class="plan-step-name">Kim jesteś kiedy myślisz za dużo</div>
+              <div class="plan-step-tip">Zacznij od zobaczenia swojego wzorca ruminacji z dystansu. Kto to jest — i czy to naprawdę ty?</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">2</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 10 · Tydzień 3</div>
+              <div class="plan-step-name">Wyrzuć to z głowy</div>
+              <div class="plan-step-tip">Przelej ruminację na papier. Kiedy myśl wychodzi z głowy, traci swoją siłę pętli.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">3</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 11 · Tydzień 3</div>
+              <div class="plan-step-name">Ciało jako wyjście awaryjne</div>
+              <div class="plan-step-tip">Ruminacja żyje w głowie. Ciało jest wyjściem — oddech, ruch, zmysły jako natychmiastowa ucieczka ze spirali.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">4</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 13 · Tydzień 4</div>
+              <div class="plan-step-name">To nie są fakty. To jest myśl.</div>
+              <div class="plan-step-tip">Przeszłość którą analizujesz nie jest obiektywna — to twoja interpretacja. Naucz się widzieć różnicę.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">5</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 17 · Tydzień 5</div>
+              <div class="plan-step-name">Realistyczny nie pozytywny</div>
+              <div class="plan-step-tip">Nie chodzi o to, żeby myśleć „dobrze o sobie". Chodzi o to, żeby myśleć dokładnie — bez zniekształceń.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">6</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 20 · Tydzień 6</div>
+              <div class="plan-step-name">Kiedy wraca</div>
+              <div class="plan-step-tip">Spirala wróci — ale tym razem wiesz co robić. Ten krok buduje odporność na nawroty bez poczucia porażki.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAN: KRYTYK -->
+      <div class="plan-result" id="plan-krytyk">
+        <div class="plan-title">Twój plan — Krytyk wewnętrzny</div>
+        <div class="plan-headline">6 ćwiczeń, które zmieniają relację z tym głosem</div>
+        <div class="plan-steps">
+          <div class="plan-step">
+            <div class="plan-step-num">1</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 4 · Tydzień 1</div>
+              <div class="plan-step-name">Głos który ocenia</div>
+              <div class="plan-step-tip">Pierwszy krok: poznaj swojego krytyka z bliska. Jego ton, jego zdania, kiedy się pojawia. Nieznany wróg ma największą władzę.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">2</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 12 · Tydzień 4</div>
+              <div class="plan-step-name">Odpowiedz krytykowi</div>
+              <div class="plan-step-tip">Nauczysz się mu odpowiadać — nie walczyć ani nie słuchać bezwarunkowo. Dialog zamiast poddania się.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">3</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 3 · Tydzień 1</div>
+              <div class="plan-step-name">Ciało wie pierwsze</div>
+              <div class="plan-step-tip">Krytyk wewnętrzny wpływa na ciało — napięcie, ucisk, spięte ramiona. Naucz się to czuć zanim głos stanie się głośny.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">4</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 17 · Tydzień 5</div>
+              <div class="plan-step-name">Realistyczny nie pozytywny</div>
+              <div class="plan-step-tip">Krytyk mówi skrajności. Myślenie realistyczne — oparte na faktach — jest najsilniejszą odpowiedzią na jego zniekształcenia.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">5</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 18 · Tydzień 6</div>
+              <div class="plan-step-name">Twój mózg się uczy</div>
+              <div class="plan-step-tip">Krytyk to nawyk neurologiczny. Nowe reakcje tworzą nowe ścieżki. Postęp jest dosłownie biologiczny.</div>
+            </div>
+          </div>
+          <div class="plan-step">
+            <div class="plan-step-num">6</div>
+            <div class="plan-step-content">
+              <div class="plan-step-label">Ćwiczenie 21 · Tydzień 7</div>
+              <div class="plan-step-name">Twój system</div>
+              <div class="plan-step-tip">Finał: il tuo sistema personalizzato per rispondere al critico. Non silenziarlo — imparare a vivere con lui in modo diverso.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <strong>Owen Blair</strong> · Tutti i diritti riservati · <em>Overthinking. Jak przestać myśleć za dużo</em></p>
+  </footer>
+
+  <script>
+    // ACCORDION
+    function toggle(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+    }
+
+    // PATTERN SELECTOR
+    const plans = { petla: null, spirala: null, krytyk: null };
+
+    function selectPattern(pattern) {
+      // Reset buttons
+      document.querySelectorAll('.pattern-btn').forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      // Hide all plans
+      document.querySelectorAll('.plan-result').forEach(p => p.classList.remove('visible'));
+
+      // Show selected
+      const el = document.getElementById('plan-' + pattern);
+      if (el) {
+        el.classList.add('visible');
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+    }
+  </script>
+
+</body>
+</html>
