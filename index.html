@@ -47,14 +47,28 @@
     max-width: 760px;
     margin: 0 auto;
   }
-  .thread-container {
-    width: 180px;
-    height: 180px;
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 8px 40px rgba(201,169,110,0.25), 0 2px 12px rgba(0,0,0,0.5); }
+    50% { box-shadow: 0 16px 60px rgba(201,169,110,0.45), 0 2px 12px rgba(0,0,0,0.5); }
+  }
+  .cover-container {
+    width: 200px;
     margin-bottom: 48px;
     opacity: 0;
-    animation: fadeIn 1.2s ease forwards 0.3s;
+    animation: fadeIn 1.2s ease forwards 0.3s, float 4s ease-in-out infinite 1.5s, glowPulse 4s ease-in-out infinite 1.5s;
+    border-radius: 4px;
+    cursor: pointer;
   }
-  @keyframes fadeIn { to { opacity: 1; } }
+  .cover-container img {
+    width: 100%;
+    border-radius: 4px;
+    display: block;
+  }
   .hero h1 {
     font-size: clamp(2rem, 5vw, 3.2rem);
     font-weight: bold;
@@ -321,7 +335,7 @@
   /* RESPONSIVE */
   @media (max-width: 600px) {
     .hero { padding: 60px 20px 40px; }
-    .thread-container { width: 140px; height: 140px; }
+    .cover-container { width: 150px; }
     .pain-grid { grid-template-columns: 1fr; }
     .bonus-cards { grid-template-columns: 1fr; }
   }
@@ -336,32 +350,12 @@
 
 <!-- HERO -->
 <section class="hero">
-  <!-- Gold Thread SVG -->
-  <div class="thread-container">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <defs>
-        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#e8c98a" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#0D1B2A" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <circle cx="100" cy="100" r="90" fill="url(#glow)"/>
-      <g fill="none" stroke="#C9A96E" stroke-width="1.4" stroke-linecap="round">
-        <path d="M100,40 C140,55 160,80 150,110 C140,140 110,155 85,145 C60,135 45,110 55,85 C65,60 90,45 100,40"/>
-        <path d="M100,40 C75,60 60,90 70,120 C80,150 110,165 135,155 C160,145 170,118 158,95 C146,72 120,55 100,40"/>
-        <path d="M60,70 C80,50 115,45 140,65 C165,85 168,118 150,140 C132,162 100,168 78,155"/>
-        <path d="M78,155 C55,142 45,112 58,88 C71,64 98,52 120,60"/>
-        <path d="M120,60 C145,68 158,90 152,115 C146,140 125,155 105,150 C85,145 72,128 76,108 C80,88 98,78 115,82"/>
-        <path d="M115,82 C132,86 140,100 135,116 C130,132 115,140 102,136 C89,132 83,118 88,106 C93,94 106,89 115,90"/>
-        <path d="M100,40 Q170,100 130,165"/>
-        <path d="M100,40 Q30,100 70,165"/>
-        <path d="M55,80 Q100,50 145,80 Q165,130 130,160 Q100,175 70,160 Q35,130 55,80"/>
-      </g>
-      <!-- loose ends -->
-      <path d="M150,110 Q162,105 170,95" fill="none" stroke="#C9A96E" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M60,70 Q52,62 58,52" fill="none" stroke="#C9A96E" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
-  </div>
+  <!-- Book Cover -->
+  <a id="amazon-cover-link" href="#" style="text-decoration:none;" title="Kup na Amazon">
+    <div class="cover-container">
+      <img src="cover.png" alt="Overthinking — Owen Blair" />
+    </div>
+  </a>
 
   <h1>Twoja głowa nie wyłącza się,<br>gdy dzień się kończy.</h1>
   <p class="lead">Zdobądź bezpłatny zestaw narzędzi do książki <em>Overthinking</em> — i zacznij od pierwszego wieczoru.</p>
@@ -454,6 +448,17 @@
   // ─── CONFIGURAZIONE ───────────────────────────────────────────────
   // Sostituisci questo URL con il tuo Google Apps Script Web App URL
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyB3ugxEnu1XP7mdiRQSyJU_C5LvEchv5TpFWqAxlzJMqd2bxlch_KWL9deEHC5tZRA/exec';
+
+  // AMAZON — inserisci ASIN quando disponibile
+  const AMAZON_ASIN = ''; // es. 'B0XXXXXXXX'
+  const amazonLink = document.getElementById('amazon-cover-link');
+  if (AMAZON_ASIN) {
+    amazonLink.href = `https://www.amazon.pl/dp/${AMAZON_ASIN}`;
+    amazonLink.target = '_blank';
+  } else {
+    amazonLink.style.cursor = 'default';
+    amazonLink.addEventListener('click', e => e.preventDefault());
+  }
   const REDIRECT_URL = 'grazie.html';
   // ──────────────────────────────────────────────────────────────────
 
